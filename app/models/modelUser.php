@@ -11,7 +11,7 @@ class modelUser extends Model {
 	public $password;
 
 	protected $errors = [];
-	protected static $tableName = '_user';
+	protected static $tableName = 'user';
 	protected static $attributes = [ 'id', 'login', 'password' ];
 	protected static $massLoadAttributes = [ 'login', 'password' ];
 

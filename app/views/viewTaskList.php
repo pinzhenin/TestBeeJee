@@ -35,7 +35,7 @@ $user = App::$app->user;
 		<a href="?sort=userEmail">email</a>
 	</div>
 	<div class="col-xs-5">
-		<a href="?sort=taskText">задача</a>
+		задача
 	</div>
 	<div class="col-xs-2">
 		<a href="?sort=taskStatus">статус</a>

@@ -14,7 +14,7 @@ class modelTask extends Model {
 	public $editedByAdmin;
 
 	protected $errors = [];
-	protected static $tableName = '_task';
+	protected static $tableName = 'task';
 	protected static $attributes = [ 'id', 'userName', 'userEmail', 'taskText', 'taskStatus', 'editedByAdmin' ];
 	protected static $massLoadAttributes = [ 'userName', 'userEmail', 'taskText' ];
 
