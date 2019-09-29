@@ -9,7 +9,7 @@ class Controller {
 		$this->actionId = $actionId;
 	}
 
-	public function doAction() {
+	public function runAction() {
 		$actionMethod = 'action' . ucFirst( $this->actionId );
 		if( method_exists( $this, $actionMethod ) ) {
 			return $this->$actionMethod();

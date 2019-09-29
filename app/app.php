@@ -1,34 +1,40 @@
 <?
+require_once( 'models/modelUser.php' );
 
 class App {
 
-	public $config;
-	public $db;
-	public $user;
+	public static $app;
 
-	public function __construct( $config ) {
+	public static function init( $config ) {
 		session_start();
-		$this->config = $config;
-		$this->db = new PDO(
+		self::$app = new stdClass;
+		self::$app->config = $config;
+		self::$app->db = new PDO(
 			"mysql:host={$config['db']['host']};dbname={$config['db']['database']}", $config['db']['username'], $config['db']['password']
 		);
+		self::$app->user =
+			isset( $_SESSION['user.id'] ) ? modelUser::find( $_SESSION['user.id'] ) : NULL;
 	}
 
-	public function controller() {
-		$controller = NULL;
-
+	public static function controller() {
 		$requestUri = $_SERVER['REQUEST_URI'];
 		list( $null, $controllerId, $actionId ) = preg_split( '|[/?]+|', $requestUri );
 
 		$template = '/^[[:alpha:]][[:alnum:]]*$/';
 		if( preg_match( $template, $controllerId ) && preg_match( $template, $actionId ) ) {
-// Проверить, что контроллер существует
 			$controllerClass = 'controller' . ucfirst( $controllerId );
-			require_once( "{$controllerClass}.php" );
-			$controller = new $controllerClass( $actionId );
+			if( file_exists( __DIR__ . "/{$controllerClass}.php" ) ) {
+				require_once( "{$controllerClass}.php" );
+				$controller = new $controllerClass( $actionId );
+				return $controller;
+			}
 		}
 
-		return $controller;
+		// нет запрашиваемого контроллера
+		require_once( "Controller.php" );
+		$controller = new Controller( NULL );
+		$controller->error404();
+		exit;
 	}
 
 }

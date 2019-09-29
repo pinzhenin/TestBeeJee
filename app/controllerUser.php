@@ -18,8 +18,7 @@ class controllerUser extends Controller {
 	}
 
 	public function actionLogout() {
-		global $app;
-		$user = $app->user;
+		$user = App::$app->user;
 		if( isset( $user ) ) {
 			$user->logout();
 		}

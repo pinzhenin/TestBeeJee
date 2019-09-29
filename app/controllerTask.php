@@ -18,8 +18,7 @@ class controllerTask extends Controller {
 	}
 
 	public function actionEdit() {
-		global $app;
-		$user = $app->user;
+		$user = App::$app->user;
 		if( !isset( $user ) ) {
 			$this->error401();
 			return;
@@ -58,8 +57,7 @@ class controllerTask extends Controller {
 	}
 
 	public function actionDone() {
-		global $app;
-		$user = $app->user;
+		$user = App::$app->user;
 		if( !isset( $user ) ) {
 			$this->error401();
 			return;

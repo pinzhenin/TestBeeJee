@@ -27,7 +27,6 @@ class Model {
 	}
 
 	public function update() {
-		global $app;
 		$this->validate();
 		if( $this->errors ) {
 			return;
@@ -45,7 +44,7 @@ class Model {
 		$properties = implode( ', ', $param );
 		$query = preg_replace( '/{tableName}/', '`' . static::$tableName . '`', $query );
 		$query = preg_replace( '/{properties}/', $properties, $query );
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		$sth->execute( $input );
 		$rc = $sth->execute( $input );
@@ -53,7 +52,6 @@ class Model {
 	}
 
 	public function insert() {
-		global $app;
 		$this->validate();
 		if( $this->errors ) {
 			return;
@@ -70,17 +68,16 @@ class Model {
 		$properties = implode( ', ', $param );
 		$query = preg_replace( '/{tableName}/', '`' . static::$tableName . '`', $query );
 		$query = preg_replace( '/{properties}/', $properties, $query );
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		$rc = $sth->execute( $input );
 		return $rc;
 	}
 
 	public static function find( $id ) {
-		global $app;
 		$query = 'SELECT * FROM {tableName} WHERE `id` = :id';
 		$query = preg_replace( '/{tableName}/', '`' . static::$tableName . '`', $query );
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		$rc = $sth->execute( [ ':id' => $id ] );
 		if( !$rc ) {
@@ -98,7 +95,6 @@ class Model {
 	}
 
 	public static function findAll( $param = [] ) {
-		global $app;
 		$query = 'SELECT * FROM {tableName}';
 		$query = preg_replace( '/{tableName}/', '`' . static::$tableName . '`', $query );
 		if( isset( $param['order'] ) && in_array( $param['order'][0], static::$attributes ) ) {
@@ -110,7 +106,7 @@ class Model {
 		elseif( isset( $param['limit'] ) ) {
 			$query .= " LIMIT {$param['limit']}";
 		}
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		$rc = $sth->execute();
 		if( !$rc ) {
@@ -132,10 +128,9 @@ class Model {
 	}
 
 	public static function countAll() {
-		global $app;
 		$query = 'SELECT COUNT(1) AS `count` FROM {tableName}';
 		$query = preg_replace( '/{tableName}/', '`' . static::$tableName . '`', $query );
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		if( $sth && $sth->execute() ) {
 			$hash = $sth->fetch( PDO::FETCH_ASSOC );

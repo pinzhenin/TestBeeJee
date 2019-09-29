@@ -6,8 +6,7 @@ $sort = $data['sort'];
 $pageFirst = 1;
 $pageLast = ceil( $count / 3 );
 
-global $app;
-$user = $app->user;
+$user = App::$app->user;
 ?>
 
 <div class="row">

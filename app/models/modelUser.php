@@ -42,10 +42,9 @@ class modelUser extends Model {
 	}
 
 	public static function findByLogin( $login, $password ) {
-		global $app;
 		$query = "SELECT * FROM {tableName} WHERE `login` = :login";
 		$query = preg_replace( '/{tableName}/', '`' . self::$tableName . '`', $query );
-		$db = $app->db;
+		$db = App::$app->db;
 		$sth = $db->prepare( $query );
 		if( $sth && $sth->execute( [ ':login' => $login ] ) ) {
 			$hash = $sth->fetch( PDO::FETCH_ASSOC );
